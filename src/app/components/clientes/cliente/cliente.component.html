@@ -1,0 +1,29 @@
+<p>cliente works!</p>
+
+<app-cliente-cadastro
+     (salvarEvento)="registrarClienteSalvo()"
+    [cliente]="cliente"></app-cliente-cadastro>
+
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(cliente of clientes; track cliente){
+            <tr>
+
+                <td>{{cliente.id}}</td>
+                <td>{{cliente.nome}}</td>
+                <button (click)="preencherCamposParaEditar(cliente)">Editar</button>
+                <button (click)="apagar(cliente)">Apagar</button>
+        }
+    </tbody>
+</table>
+
