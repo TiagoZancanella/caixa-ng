@@ -1,0 +1,10 @@
+<div> 
+    <label for="campo-nome">Nome</label>
+    <input type="text" id="campo-nome"[(ngModel)]="cliente!.nome">
+</div>
+
+<div>
+    <label for="campo-cpf">CPF</label>
+    <input type="text" id="campo-cpf" [(ngModel)]="cliente!.cpf">
+</div>
+    <button (click)="salvar()">salvar</button>
