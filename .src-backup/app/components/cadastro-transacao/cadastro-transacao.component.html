@@ -12,36 +12,7 @@
 
 </form>
 
-
-<table  border="1" style="margin-top: 20px;">
-  <thead>
-    <tr>
-      <th>Entrada</th>
-      <th>Saida</th>
-      <th>Caixa</th>
-      <th>Investimento</th>
-     </tr>
-  </thead>
-  <tbody>
-    <tr>
-    <td>R$ {{ total.toFixed(2) }}</td>
-    <td>R$ {{ totalSaida.toFixed(2) }}</td>
-    <td></td>
-    <td></td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-
-<h2>Minhas Transações</h2>
-<h3>Total: R$ {{ total.toFixed(2) }}</h3>
- 
-<h2>Gastos</h2>  
-<h3>Total: R$ {{ total.toFixed(2) }}</h3>
-Tabela para exibir transações
+<!-- Tabela para exibir transações -->
 <table *ngIf="transacoes.length > 0" border="1" style="margin-top: 20px;">
   <thead>
     <tr>
@@ -51,8 +22,6 @@ Tabela para exibir transações
       <th>Local</th>
       <th>Valor</th>
       <th>Tipo</th>
-      <th colspan="2">Ação</th>
-       <th></th> 
     </tr>
   </thead>
   <tbody>
@@ -63,8 +32,10 @@ Tabela para exibir transações
       <td>{{ t.local }}</td>
       <td>{{ t.valor | currency:'BRL' }}</td>
       <td>{{ t.tipo }}</td>
-      <button (click)="preencherCamposParaEditar(t)">Editar</button>
-      <button (click)="apagar(t)">Apagar</button>
     </tr>
   </tbody>
 </table>
+
+<h2>Minhas Transações</h2>
+
+<h3>Total: R$ {{ total.toFixed(2) }}</h3>

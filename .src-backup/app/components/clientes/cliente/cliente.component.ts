@@ -2,23 +2,18 @@ import { Component } from '@angular/core'; // Importa o decorador Component do A
 import { ClienteCadastroComponent } from "../cliente-cadastro/cliente-cadastro.component"; // Importa o componente de cadastro de cliente
 import { Cliente } from '../../../models/cliente'; // Importa a classe Cliente do modelo
 import { JsonpClientBackend } from '@angular/common/http'; // Importa do Angular HTTP (não utilizado no código atual)
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cliente', // Define o seletor do componente
-  imports: [ClienteCadastroComponent, FormsModule], // Importa o componente de cadastro para uso neste componente
+  imports: [ClienteCadastroComponent], // Importa o componente de cadastro para uso neste componente
   templateUrl: './cliente.component.html', // Caminho do template HTML
   styleUrl: './cliente.component.css' // Caminho do arquivo CSS (possível erro: o correto seria 'styleUrls' no plural)
 })
 export class ClienteComponent {
 
-  // clientes: Array<Cliente> = [] // Lista de clientes cadastrados
+  clientes: Array<Cliente> = [] // Lista de clientes cadastrados
   idAtual: number = 0; // Armazena o último ID utilizado
-  busca: string = "";
 
-
-  clientes: Array<Cliente> = new Array();
-  clientesTable: Array<Cliente> = new Array();
   // será o cliente que utilizaremos para preencher os campos na tela e posteriormente salvar 
   cliente: Cliente; // Objeto cliente usado no formulário
   constructor(){
@@ -37,21 +32,12 @@ export class ClienteComponent {
   
     this.cliente = new Cliente(); // Reseta o objeto cliente
     this.salvarEmLocalStorage(); // Salva a lista atualizada no localStorage
-    this.listarClientesFiltrando();
   }
 
 private editar(){ // Atualiza os dados do cliente existente na lista
   let indiceCliente = this.clientes.findIndex(x => x.id == this.cliente.id);
   this.clientes[indiceCliente].nome = this.cliente.nome;
-  this.clientes[indiceCliente].cpf = this.cliente.cpf;
 }
-  listarClientesFiltrando(){
-    if(!this.busca)
-      this.clientesTable = this.clientes;
-
-    this.clientesTable = this.clientes
-      .filter(cliente => cliente.nome.toLowerCase().includes(this.busca.toLowerCase()) || cliente.cpf == this.busca);
-  }
 
 private cadastrar() { // Cadastra um novo cliente na lista
   this.idAtual++; // Incrementa o ID atual
@@ -67,37 +53,23 @@ salvarEmLocalStorage() {
 }
 
 carregarClientesDoLocalStorage() {
+  // Obtém a lista de clientes do localStorage com a chave "clientes"
   const clientesString = localStorage.getItem("clientes");
-
-  if (!clientesString) {
-    this.clientes = [];
-    this.clientesTable = [];
+  
+  // Verifica se existe conteúdo; se não, encerra a função
+  if (clientesString === null)
     return;
-  }
 
-  try {
-    const dados = JSON.parse(clientesString);
-    if (Array.isArray(dados)) {
-      this.clientes = dados;
-    } else {
-      this.clientes = [];
-      console.error("Dados do localStorage 'clientes' não são um array.");
-    }
-  } catch (e) {
-    console.error("Erro ao fazer parse dos clientes:", e);
-    this.clientes = [];
-  }
-
-  this.listarClientesFiltrando();
+  // Converte a string JSON de volta para a lista de objetos
+  this.clientes = JSON.parse(clientesString);
 
   // Atualiza o idAtual com base no maior ID existente
-  this.clientes.forEach(cliente => {
+  Array.from(this.clientes).forEach(cliente => {
     if (cliente.id > this.idAtual) {
       this.idAtual = cliente.id;
     }
   });
 }
-
 
 apagar(cliente: Cliente) { // Apaga um cliente da lista
   let confirmacao = confirm(`Deseja realemente apagar o cliente'${cliente.nome}`); // Confirmação do usuário
@@ -107,16 +79,12 @@ apagar(cliente: Cliente) { // Apaga um cliente da lista
   let indiceCliente = this.clientes.findIndex(x => x.id == cliente.id); // Localiza o índice do cliente
   this.clientes.splice(indiceCliente, 1); // Remove da lista
 
-
-
   this.salvarEmLocalStorage(); // Atualiza o localStorage
-  this.listarClientesFiltrando();
 }
 
 preencherCamposParaEditar(cliente: Cliente){ // Preenche os campos do formulário com os dados do cliente a ser editado
   this.cliente = new Cliente(); // Cria um novo objeto Cliente
   this.cliente.id = cliente.id; // Copia o ID
   this.cliente.nome = cliente.nome; // Copia o nome
-  this.cliente.cpf = cliente.cpf; // Copia o cpf
 }
 }

@@ -1,0 +1,44 @@
+<div class="container">
+    <h1> Lista de Produtos</h1>
+
+    <div class="formulario-tabela">
+        <div class="formulario">
+<div>
+    <label for="nome-produto">Produto</label>
+    <input type="text" id="nome-produto" placeholder="Digite um Produto" [(ngModel)]="produto">
+
+</div>
+<button (click)="salvarProduto()">Salvar</button>
+        </div>
+        <div class="tabela">
+            
+
+<table border="1">
+
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Produto</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(produto of produtos; track produto){
+            <tr>
+                <td>{{produto.id}}</td>
+                <td>{{produto.nome}}</td>
+                <td>
+                    <button (click)="editar(produto)">Editar</button>
+                    <button (click)="apagarProduto(produto)">Apagar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>
+
+
+
+
